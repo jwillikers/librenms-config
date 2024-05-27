@@ -29,7 +29,7 @@ mkdir --parents ~/Projects
 +
 [,sh]
 ----
-git -C ~/Projects clone git@github.com:jwillikers/librenms-config.git
+git -C ~/Projects clone https://github.com/jwillikers/librenms-config.git
 ----
 
 . For each template file in the `config` directory, copy it to the same directory without the `.template` extension.
