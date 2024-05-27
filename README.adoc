@@ -1,0 +1,115 @@
+= LibreNMS Config
+Jordan Williams <jordan@jwillikers.com>
+:experimental:
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+:LibreNMS: https://www.librenms.org/[LibreNMS]
+
+My configuration for {LibreNMS}, a network management and monitoring tool.
+
+== Usage
+
+This repository contains the configuration files for {LibreNMS}.
+The configuration is meant to be used with the containers from the https://github.com/jwillikers/home-lab-helm[Home Lab Helm] repository.
+
+. Create a `Projects` directory in the current user's home directory.
++
+[,sh]
+----
+mkdir --parents ~/Projects
+----
+
+. Clone this repository under `~/Projects`.
++
+[,sh]
+----
+git -C ~/Projects clone git@github.com:jwillikers/librenms-config.git
+----
+
+. For each template file in the `config` directory, copy it to the same directory without the `.template` extension.
++
+Bash::
++
+[,sh]
+----
+for host_template in config/*.yaml.template; do cp --no-clobber -- "$host_template" config/$(basename -- "$host_template" ".template"); done
+----
+
+fish::
++
+[,sh]
+----
+for host_template in config/*.conf.template; cp --no-clobber -- "$host_template" config/(basename -- "$host_template" ".template"); end
+----
+
+Nushell::
++
+[,sh]
+----
+for host_template in (glob "config/*.conf.template") { cp --no-clobber $host_template $"($host_template | path parse | reject extension | path join)" }
+----
+
+. Fill in any missing credentials in the files in the `config` directory, such as SNMPv3 authentication and encryption keys.
+
+. Make sure that the sensitive files are not world readable.
++
+[,sh]
+----
+chmod 0660 config/*.yaml
+----
+
+. Determine the UID mappings inside the rootless user's namespace.
++
+[,sh]
+----
+podman unshare cat /proc/self/uid_map
+         0        818          1
+         1     655360      65536
+----
+
+. Do the math to determine the UID outside of the container that is used for user inside the container.
+In this case, the container defaults to UID 0 inside the container.
+From the output of the previous command, we can see that UID 1 maps to UID 655360.
+The following expression yields the UID outside of the container.
++
+[,sh]
+----
+math 655360 + 0 - 1
+655359
+----
+
+. Make sure that files are owned by the subuid that will map to the `root` user in the container.
++
+[,sh]
+----
+sudo chown --recursive 655359 config
+----
+
+. Then mount the provided `config/` directory inside the LibreNMS server container at `/data/config`.
+
+== References
+
+* https://docs.librenms.org/[LibreNMS Documentation]
+
+== Code of Conduct
+
+Please refer to the project's link:CODE_OF_CONDUCT.adoc[Code of Conduct].
+
+== License
+
+This repository is licensed under the https://www.gnu.org/licenses/gpl-3.0.html[GPLv3].
+Please refer to the bundled link:LICENSE.adoc[license].
+
+== Copyright
+
+© 2024 Jordan Williams
+
+== Authors
+
+mailto:{email}[{author}]

@@ -1,0 +1,25 @@
+allow_duplicate_sysName: true
+autodiscovery.nets-exclude:
+  - 10.2.0.0/16
+  - 10.3.0.0/16
+  - 100.64.0.0/10
+  - "fc00::/7"
+mydomain: jwillikers.io
+nets:
+  - 10.1.0.0/16
+  - 10.2.0.0/16
+  - 10.3.0.0/16
+  - 100.64.0.0/10
+  - "fc00::/7"
+  # Device IP addresses.
+  # 100.95.232.12/32
+  - "fd7a:115c:a1e0:ab12:4843:cd96:625f:e80c/128"
+  - "fd7a:115c:a1e0:ab12:4843:cd96:6276:455e/128"
+  - "fd7a:115c:a1e0:ab12:4843:cd96:6265:4510/128"
+site_style: dark
+snmp.max_repeaters: 30
+snmp.version:
+  - v3
+snmp.transports:
+  - udp
+  - udp6
