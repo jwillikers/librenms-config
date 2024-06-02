@@ -5,6 +5,7 @@
         "authlevel",
         "authname",
         "authpass",
+        "autodiscovery",
         "cryptoalgo",
         "cryptopass",
         "ifdef",
