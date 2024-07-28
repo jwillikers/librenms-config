@@ -18,12 +18,12 @@ nets:
   - "fd7a:115c:a1e0:ab12:4843:cd96:6265:4510/128"
 service_alerting_enabled: false
 service_billing_enabled: false
-service_poller_workers: 4
-service_services_workers: 2
-service_discovery_workers: 2
-service_poller_frequency: 600
-service_services_frequency: 600
-service_poller_down_retry: 120
+service_poller_workers: 2
+service_services_workers: 1
+service_discovery_workers: 1
+service_poller_frequency: 900
+service_services_frequency: 900
+service_poller_down_retry: 180
 site_style: dark
 snmp.max_repeaters: 30
 snmp.version:
